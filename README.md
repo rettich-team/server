@@ -3,21 +3,14 @@
 :wrench: Under construction
 
 # Table of Contents
-- [Issues](#issues)
 - [Contribution](#contribution)
 - [License](#license)
-
-<a name="issues"/>
-
-## Issues
-
-:wrench: Under construction
 
 <a name="contribution"/>
 
 ## Contribution
 
-:wrench: Under construction
+Please have a look at [here](https://github.com/rettich-team/server/blob/master/CONTRIBUTING.md)
 
 <a name="license"/>
 
