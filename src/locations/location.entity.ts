@@ -17,14 +17,14 @@ export class Location extends BaseEntity {
   })
   @Min(-90)
   @Max(90)
-  latitude: number;
+  public latitude: number;
 
   @PrimaryColumn({
     type: 'real',
   })
   @Min(-180)
   @Max(180)
-  longitude: number;
+  public longitude: number;
 
   @Column()
   public description: string;
