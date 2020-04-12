@@ -12,7 +12,7 @@ export abstract class BaseConfigurationService {
         return rawValue;
     }
 
-    protected constructAndParseValue<TResult>(key: string, validator: AnySchema, parser: (rawValue: string) => TResult): TResult {
+    protected constructAndParseValue<TResult>(key: string, validator: AnySchema, parser: (value: string) => TResult): TResult {
         const rawValue: string = this.configService.get(key);
         const parsedValue: TResult = parser(rawValue);
 
