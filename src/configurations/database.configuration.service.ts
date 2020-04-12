@@ -11,7 +11,8 @@ export class DatabaseConfigurationService extends BaseConfigurationService {
     public port: number;
     public username: string;
     public password: string;
-    public name: string;
+    public database: string;
+    public entities: string[];
     public logging: boolean;
     public synchronize: boolean;
     
@@ -40,10 +41,11 @@ export class DatabaseConfigurationService extends BaseConfigurationService {
             `${prefix}PASSWORD`,
             Joi.string().allow('').optional(),
         );
-        this.name = this.constructValue(
+        this.database = this.constructValue(
             `${prefix}NAME`,
             Joi.string().required(),
         );
+        this.entities = [`${__dirname}/../**/*.entity.{ts,js}`];
         this.logging = this.constructAndParseValue<boolean>(
             `${prefix}LOGGING`,
             Joi.boolean().optional(),
