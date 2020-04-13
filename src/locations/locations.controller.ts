@@ -15,6 +15,11 @@ import { GetLocationByCoordinatesDTO } from './dtos/getLocationByCoordinates.dto
 export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
+  @Get()
+  public getLocations(): Promise<Location[]> {
+    return this.locationsService.getLocations();
+  }
+
   @Get(':latitude/:longitude')
   public getLocationByCoordinates(
     @Param() { latitude, longitude }: GetLocationByCoordinatesDTO,

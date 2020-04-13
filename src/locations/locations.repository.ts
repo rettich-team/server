@@ -5,6 +5,10 @@ import { AddLocationDTO } from './dtos/addLocation.dto';
 
 @EntityRepository(Location)
 export class LocationsRepository extends Repository<Location> {
+    public getLocations(): Promise<Location[]> {
+        return this.find();
+    }
+    
     public getLocationByCoordinates(latitude: number, longitude: number): Promise<Location> {
         return this.findOne({ latitude, longitude });
     }

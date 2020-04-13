@@ -12,6 +12,10 @@ export class LocationsService {
         private readonly locationsRepository: LocationsRepository
     ) {}
 
+    public getLocations(): Promise<Location[]> {
+        return this.locationsRepository.getLocations();
+    }
+
     public async getLocationByCoordinates(latitude: number, longitude: number): Promise<Location> {
         const location: Location = await this.locationsRepository.getLocationByCoordinates(latitude, longitude);
         
