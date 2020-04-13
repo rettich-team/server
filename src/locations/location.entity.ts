@@ -22,11 +22,8 @@ export class Location extends BaseEntity {
   @Max(180)
   public longitude: number;
 
-  @Column({ 
-    nullable: true,
-    length: 3000
-  })
-  public description?: string;
+  @Column({ length: 3000 })
+  public description: string;
 
   @Column({
     type: 'enum',

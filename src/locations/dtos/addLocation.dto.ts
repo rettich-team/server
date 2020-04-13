@@ -25,7 +25,8 @@ export class AddLocationDTO {
   @IsString()
   @MaxLength(3000)
   @IsOptional()
-  public description?: string;
+  @Transform((description: string) => description || '')
+  public description: string;
 
   @IsEnum(LocationFillingLevel)
   @IsOptional()

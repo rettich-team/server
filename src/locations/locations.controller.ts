@@ -2,10 +2,10 @@ import {
   Controller,
   Post,
   Body,
-  NotImplementedException,
 } from '@nestjs/common';
 
 import { LocationsService } from './locations.service';
+import { Location } from './location.entity';
 import { AddLocationDTO } from './dtos/addLocation.dto';
 
 @Controller('locations')
@@ -16,6 +16,6 @@ export class LocationsController {
   public addLocation(
     @Body() addLocationDTO: AddLocationDTO,
   ): Promise<Location> {
-    throw new NotImplementedException();
+    return this.locationsService.addLocation(addLocationDTO);
   }
 }
