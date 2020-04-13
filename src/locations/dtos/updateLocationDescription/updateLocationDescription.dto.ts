@@ -1,4 +1,4 @@
-export class UpdateLocationDescriptionByCoordinatesDTO {
+export class UpdateLocationDescriptionDTO {
     constructor(
         public readonly latitude: number, 
         public readonly longitude: number, 

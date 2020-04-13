@@ -10,10 +10,11 @@ import {
 import { LocationsService } from './locations.service';
 import { Location } from './location.entity';
 import { AddLocationDTO } from './dtos/addLocation.dto';
-import { GetLocationByCoordinatesDTO } from './dtos/getLocationByCoordinates.dto';
-import { UpdateLocationDescriptionByCoordinatesParamsDTO } from './dtos/updateLocationDescription/updateLocationDescriptionByCoordinates.params.dto';
-import { UpdateLocationDescriptionByCoordinatesBodyDTO } from './dtos/updateLocationDescription/updateLocationDescriptionByCoordinates.body.dto';
-import { UpdateLocationDescriptionByCoordinatesDTO } from './dtos/updateLocationDescription/updateLocationDescriptionByCoordinates.dto';
+import { LocationCoordinatesParamsDTO } from './dtos/locationCoordinates.params.dto';
+import { UpdateLocationDescriptionBodyDTO } from './dtos/updateLocationDescription/updateLocationDescription.body.dto';
+import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
+import { UpdateLocationFillingLevelBodyDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.body.dto';
+import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.dto';
 
 @Controller('locations')
 export class LocationsController {
@@ -25,10 +26,10 @@ export class LocationsController {
   }
 
   @Get(':latitude/:longitude')
-  public getLocationByCoordinates(
-    @Param() { latitude, longitude }: GetLocationByCoordinatesDTO,
+  public getLocation(
+    @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
   ): Promise<Location> {
-    return this.locationsService.getLocationByCoordinates(latitude, longitude);
+    return this.locationsService.getLocation(latitude, longitude);
   }
 
   @Post()
@@ -40,10 +41,19 @@ export class LocationsController {
 
   @Patch(':latitude/:longitude/description')
   public updateLocationDescription(
-    @Param() { latitude, longitude }: UpdateLocationDescriptionByCoordinatesParamsDTO,
-    @Body() { description }: UpdateLocationDescriptionByCoordinatesBodyDTO,
+    @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
+    @Body() { description }: UpdateLocationDescriptionBodyDTO,
   ): Promise<Location> {
-    const updateLocationDescriptionByCoordinatesDTO: UpdateLocationDescriptionByCoordinatesDTO = new UpdateLocationDescriptionByCoordinatesDTO(latitude, longitude, description);
-    return this.locationsService.updateLocationDescription(updateLocationDescriptionByCoordinatesDTO);
+    const updateLocationDescriptionDTO: UpdateLocationDescriptionDTO = new UpdateLocationDescriptionDTO(latitude, longitude, description);
+    return this.locationsService.updateLocationDescription(updateLocationDescriptionDTO);
+  }
+
+  @Patch(':latitude/:longitude/fillingLevel')
+  public updateLocationFillingLevel(
+    @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
+    @Body() { fillingLevel }: UpdateLocationFillingLevelBodyDTO,
+  ): Promise<Location> {
+    const updateLocationFillingLevelDTO: UpdateLocationFillingLevelDTO = new UpdateLocationFillingLevelDTO(latitude, longitude, fillingLevel);
+    return this.locationsService.updateLocationFillingLevel(updateLocationFillingLevelDTO);
   }
 }

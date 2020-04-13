@@ -1,7 +1,7 @@
 import { IsNumber, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class GetLocationByCoordinatesDTO {
+export class LocationCoordinatesParamsDTO {
     @IsNumber()
     @Min(-90)
     @Max(90)
