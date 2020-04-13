@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Location } from './location.entity';
@@ -11,6 +11,16 @@ export class LocationsService {
         @InjectRepository(LocationsRepository)
         private readonly locationsRepository: LocationsRepository
     ) {}
+
+    public async getLocationByCoordinates(latitude: number, longitude: number): Promise<Location> {
+        const location: Location = await this.locationsRepository.getLocationByCoordinates(latitude, longitude);
+        
+        if (!location) {
+            throw new NotFoundException(`Location at ${latitude},${longitude} not found.`);
+        }
+
+        return location;
+    }
 
     public async addLocation(addLocationDTO: AddLocationDTO): Promise<Location> {
         const { latitude, longitude } = addLocationDTO;
