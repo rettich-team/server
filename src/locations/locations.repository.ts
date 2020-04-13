@@ -1,7 +1,8 @@
-import { EntityRepository, Repository } from 'typeorm'
+import { EntityRepository, Repository, UpdateResult } from 'typeorm'
 
 import { Location } from './location.entity';
 import { AddLocationDTO } from './dtos/addLocation.dto';
+import { UpdateLocationDescriptionByCoordinatesDTO } from './dtos/updateLocationDescription/updateLocationDescriptionByCoordinates.dto';
 
 @EntityRepository(Location)
 export class LocationsRepository extends Repository<Location> {
@@ -21,5 +22,14 @@ export class LocationsRepository extends Repository<Location> {
         location.fillingLevel = addLocationDTO.fillingLevel;
         
         return location.save();
+    }
+
+    public async updateLocationDescription({ latitude, longitude, description }: UpdateLocationDescriptionByCoordinatesDTO): Promise<UpdateResult> {
+        return this.update({ 
+            latitude, 
+            longitude 
+        }, { 
+            description
+        });
     }
 }

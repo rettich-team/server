@@ -1,9 +1,11 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateResult } from 'typeorm';
 
 import { Location } from './location.entity';
 import { LocationsRepository } from './locations.repository';
 import { AddLocationDTO } from './dtos/addLocation.dto';
+import { UpdateLocationDescriptionByCoordinatesDTO } from './dtos/updateLocationDescription/updateLocationDescriptionByCoordinates.dto';
 
 @Injectable()
 export class LocationsService {
@@ -35,5 +37,16 @@ export class LocationsService {
         }
 
         return this.locationsRepository.addLocation(addLocationDTO);
+    }
+
+    public async updateLocationDescription(updateLocationDescriptionByCoordinatesDTO: UpdateLocationDescriptionByCoordinatesDTO): Promise<Location> {
+        const { latitude, longitude } = updateLocationDescriptionByCoordinatesDTO;
+        const updateResult: UpdateResult = await this.locationsRepository.updateLocationDescription(updateLocationDescriptionByCoordinatesDTO);
+
+        if (updateResult.affected === 0) {
+            throw new NotFoundException(`Location at ${latitude},${longitude} not found.`);
+        }
+
+        return this.locationsRepository.getLocationByCoordinates(latitude, longitude);
     }
 }
