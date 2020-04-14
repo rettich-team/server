@@ -7,6 +7,7 @@ import { LocationsRepository } from './locations.repository';
 import { AddLocationDTO } from './dtos/addLocation.dto';
 import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
 import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.dto';
+import { GetLocationsDTO } from './dtos/getLocations.dto';
 
 @Injectable()
 export class LocationsService {
@@ -15,8 +16,8 @@ export class LocationsService {
         private readonly locationsRepository: LocationsRepository
     ) {}
 
-    public getLocations(): Promise<Location[]> {
-        return this.locationsRepository.getLocations();
+    public getLocations(getLocationsDTO: GetLocationsDTO): Promise<Location[]> {
+        return this.locationsRepository.getLocations(getLocationsDTO);
     }
 
     public async getLocation(latitude: number, longitude: number): Promise<Location> {

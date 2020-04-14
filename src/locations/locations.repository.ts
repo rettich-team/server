@@ -1,14 +1,25 @@
-import { EntityRepository, Repository, UpdateResult } from 'typeorm'
+import { EntityRepository, Repository, UpdateResult, SelectQueryBuilder } from 'typeorm'
 
 import { Location } from './location.entity';
 import { AddLocationDTO } from './dtos/addLocation.dto';
 import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
 import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.dto';
+import { GetLocationsDTO } from './dtos/getLocations.dto';
 
 @EntityRepository(Location)
 export class LocationsRepository extends Repository<Location> {
-    public getLocations(): Promise<Location[]> {
-        return this.find();
+    public getLocations({ fillingLevel, partialDescription }: GetLocationsDTO): Promise<Location[]> {
+        const query: SelectQueryBuilder<Location> = this.createQueryBuilder('location');
+
+        if (fillingLevel) {
+            query.andWhere("location.fillingLevel = :fillingLevel", { fillingLevel });
+        }
+
+        if (partialDescription) {
+            query.andWhere("location.description LIKE :description", { description: `%${partialDescription}%` });
+        }
+        
+        return query.getMany();
     }
     
     public getLocation(latitude: number, longitude: number): Promise<Location> {

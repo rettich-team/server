@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Patch,
+  Query
 } from '@nestjs/common';
 
 import { LocationsService } from './locations.service';
@@ -15,14 +16,17 @@ import { UpdateLocationDescriptionBodyDTO } from './dtos/updateLocationDescripti
 import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
 import { UpdateLocationFillingLevelBodyDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.body.dto';
 import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.dto';
+import { GetLocationsDTO } from './dtos/getLocations.dto';
 
 @Controller('locations')
 export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
   @Get()
-  public getLocations(): Promise<Location[]> {
-    return this.locationsService.getLocations();
+  public getLocations(
+    @Query() getLocationsDTO: GetLocationsDTO,
+  ): Promise<Location[]> {
+    return this.locationsService.getLocations(getLocationsDTO);
   }
 
   @Get(':latitude/:longitude')
