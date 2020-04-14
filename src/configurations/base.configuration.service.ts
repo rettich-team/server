@@ -7,7 +7,7 @@ export abstract class BaseConfigurationService {
     protected constructValue(key: string, validator: AnySchema): string {
         const rawValue: string = this.configService.get(key);
 
-        this.validateValue(rawValue, validator);
+        this.validateValue(rawValue, validator, key);
 
         return rawValue;
     }
@@ -16,13 +16,14 @@ export abstract class BaseConfigurationService {
         const rawValue: string = this.configService.get(key);
         const parsedValue: TResult = parser(rawValue);
 
-        this.validateValue(parsedValue, validator);
+        this.validateValue(parsedValue, validator, key);
         
         return parsedValue;
     }
 
-    private validateValue<TValue>(value: TValue, validator: AnySchema): void {
-        const validationResult: ValidationResult = validator.validate(value);
+    private validateValue<TValue>(value: TValue, validator: AnySchema, label: string): void {
+        const validationSchema: AnySchema = validator.label(label);
+        const validationResult: ValidationResult = validationSchema.validate(value);
         const validationError: ValidationError = validationResult.error;
 
         if (validationError) {
