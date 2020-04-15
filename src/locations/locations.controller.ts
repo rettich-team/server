@@ -7,6 +7,17 @@ import {
   Patch,
   Query
 } from '@nestjs/common';
+import {
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiConflictResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { LocationsService } from './locations.service';
 import { Location } from './location.entity';
@@ -19,10 +30,13 @@ import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel
 import { GetLocationsDTO } from './dtos/getLocations.dto';
 
 @Controller('locations')
+@ApiTags('locations')
 export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
   @Get()
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
   public getLocations(
     @Query() getLocationsDTO: GetLocationsDTO,
   ): Promise<Location[]> {
@@ -30,6 +44,9 @@ export class LocationsController {
   }
 
   @Get(':latitude/:longitude')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   public getLocation(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
   ): Promise<Location> {
@@ -37,6 +54,10 @@ export class LocationsController {
   }
 
   @Post()
+  @ApiCreatedResponse()
+  @ApiConflictResponse()
+  @ApiBadRequestResponse()
+  @ApiBody({ type: AddLocationDTO })
   public addLocation(
     @Body() addLocationDTO: AddLocationDTO,
   ): Promise<Location> {
@@ -44,6 +65,10 @@ export class LocationsController {
   }
 
   @Patch(':latitude/:longitude/description')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiBody({ type: UpdateLocationDescriptionBodyDTO })
   public updateLocationDescription(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
     @Body() { description }: UpdateLocationDescriptionBodyDTO,
@@ -53,6 +78,10 @@ export class LocationsController {
   }
 
   @Patch(':latitude/:longitude/fillingLevel')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiBody({ type: UpdateLocationDescriptionBodyDTO })
   public updateLocationFillingLevel(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
     @Body() { fillingLevel }: UpdateLocationFillingLevelBodyDTO,
