@@ -7,7 +7,7 @@ const mockConfigService = () => ({
   get: jest.fn(),
 });
 
-describe('ServerConfigurationService', () => {
+describe('SwaggerConfigurationService', () => {
   let swaggerConfigurationService: SwaggerConfigurationService;
 
   beforeEach(async () => {
