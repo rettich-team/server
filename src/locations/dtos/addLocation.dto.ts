@@ -4,22 +4,23 @@ import {
   IsOptional,
   MaxLength,
   IsEnum,
-  Min,
-  Max,
+  IsLatitude,
+  IsLongitude,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 import { LocationFillingLevel } from '../locationFillingLevel.enum';
+import { IsDoublePrecision } from '../../shared/decorators/dtos/isDoublePrecision.decorator';
 
 export class AddLocationDTO {
   @IsNumber()
-  @Min(-90)
-  @Max(90)
+  @IsDoublePrecision()
+  @IsLatitude()
   public latitude: number;
 
   @IsNumber()
-  @Min(-180)
-  @Max(180)
+  @IsDoublePrecision()
+  @IsLongitude()
   public longitude: number;
 
   @IsString()

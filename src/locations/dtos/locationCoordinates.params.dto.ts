@@ -1,16 +1,18 @@
-import { IsNumber, Min, Max } from 'class-validator';
+import { IsNumber, IsLatitude, IsLongitude } from 'class-validator';
 import { Type } from 'class-transformer';
+
+import { IsDoublePrecision } from '../../shared/decorators/dtos/isDoublePrecision.decorator';
 
 export class LocationCoordinatesParamsDTO {
     @IsNumber()
-    @Min(-90)
-    @Max(90)
+    @IsDoublePrecision()
+    @IsLatitude()
     @Type(() => Number)
     public latitude: number;
 
     @IsNumber()
-    @Min(-180)
-    @Max(180)
+    @IsDoublePrecision()
+    @IsLongitude()
     @Type(() => Number)
     public longitude: number;
 }

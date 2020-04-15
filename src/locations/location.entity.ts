@@ -6,20 +6,18 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
-import { Min, Max } from 'class-validator';
+import { IsLatitude, IsLongitude } from 'class-validator';
 
 import { LocationFillingLevel } from './locationFillingLevel.enum';
 
 @Entity()
 export class Location extends BaseEntity {
-  @PrimaryColumn({ type: 'real' })
-  @Min(-90)
-  @Max(90)
+  @PrimaryColumn({ type: 'double precision' })
+  @IsLatitude()
   public latitude: number;
 
-  @PrimaryColumn({ type: 'real' })
-  @Min(-180)
-  @Max(180)
+  @PrimaryColumn({ type: 'double precision' })
+  @IsLongitude()
   public longitude: number;
 
   @Column({ length: 3000 })
