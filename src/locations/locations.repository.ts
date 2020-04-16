@@ -8,7 +8,7 @@ import { GetLocationsDTO } from './dtos/getLocations.dto';
 
 @EntityRepository(Location)
 export class LocationsRepository extends Repository<Location> {
-    public getLocations({ fillingLevel, partialDescription }: GetLocationsDTO): Promise<Location[]> {
+    public getLocations({ fillingLevel, partialDescription, skip, take }: GetLocationsDTO): Promise<Location[]> {
         const query: SelectQueryBuilder<Location> = this.createQueryBuilder('location');
 
         if (fillingLevel) {
@@ -18,8 +18,11 @@ export class LocationsRepository extends Repository<Location> {
         if (partialDescription) {
             query.andWhere("location.description LIKE :description", { description: `%${partialDescription}%` });
         }
-        
-        return query.getMany();
+
+        return query
+            .skip(skip)
+            .take(take)
+            .getMany();
     }
     
     public getLocation(latitude: number, longitude: number): Promise<Location> {

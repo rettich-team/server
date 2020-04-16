@@ -1,4 +1,5 @@
-import { IsOptional, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsOptional, IsEnum, IsNotEmpty, IsString, IsInt } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { LocationFillingLevel } from '../locationFillingLevel.enum';
@@ -14,4 +15,16 @@ export class GetLocationsDTO {
     @IsOptional()
     @ApiProperty()
     public partialDescription?: string;
+
+    @IsInt()
+    @IsOptional()
+    @Type(() => Number)
+    @ApiProperty()
+    public skip?: number;
+
+    @IsInt()
+    @IsOptional()
+    @Type(() => Number)
+    @ApiProperty()
+    public take?: number;
 }
