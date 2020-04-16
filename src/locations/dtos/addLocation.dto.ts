@@ -27,7 +27,7 @@ export class AddLocationDTO {
   public longitude: number;
 
   @IsString()
-  @MaxLength(3000)
+  @MaxLength(Number(process.env.LOCATION_DESCRIPTION_MAX_LENGTH))
   @IsOptional()
   @Transform((description: string) => description || '')
   @ApiProperty()

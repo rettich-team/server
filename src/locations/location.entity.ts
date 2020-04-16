@@ -20,7 +20,7 @@ export class Location extends BaseEntity {
   @IsLongitude()
   public longitude: number;
 
-  @Column({ length: 3000 })
+  @Column({ length: Number(process.env.LOCATION_DESCRIPTION_MAX_LENGTH) })
   public description: string;
 
   @Column({

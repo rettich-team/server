@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateLocationDescriptionBodyDTO {
     @IsString()
-    @MaxLength(3000)
+    @MaxLength(Number(process.env.LOCATION_DESCRIPTION_MAX_LENGTH))
     @ApiProperty()
     public description: string;
 }
