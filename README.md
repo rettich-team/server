@@ -45,7 +45,7 @@ SWAGGER_PATH=api-docs
 LOCATION_DESCRIPTION_MAX_LENGTH=3000
 ```
 
-#### 3. Start the postgres database
+#### 3. Start the database
 
 - To start the database in a *Docker container* you need to install *Docker* on your system from [here](https://docs.docker.com/get-docker/).
 
