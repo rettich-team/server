@@ -6,6 +6,7 @@
 
 - [Get Started](#get-started)
 - [Contribution](#contribution)
+- [API Documentation](#api-documentation)
 - [License](#license)
 
 <a name="get-started"></a>
@@ -49,6 +50,14 @@ npm start
 ### Contribution
 
 Please have a look at [here](https://github.com/rettich-team/server/blob/master/CONTRIBUTING.md)
+
+<a name="api-documentation"></a>
+
+### API Documentation
+
+The api documentation is generated with [Swagger](https://docs.nestjs.com/recipes/swagger)
+
+To access it start your server in development mode and navigate to `/api-docs` (you can change the path in the environment variables -> SWAGGER_PATH)
 
 <a name="license"></a>
 
