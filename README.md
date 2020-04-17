@@ -27,7 +27,29 @@ npm i -g nan
 
 #### 2. Configure your environment
 
-Copy `.env.sample` to `.env` and change the values as you need them
+Create an *.env* file in the root directory. You can use this sample configuration
+
+```yml
+SERVER_PORT=3000
+
+NODE_ENV=development
+
+DATABASE_TYPE=postgres
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=admin
+DATABASE_NAME=RettichDB
+DATABASE_LOGGING=false
+DATABASE_SYNCHRONIZE=true
+
+SWAGGER_TITLE=RettichAPI
+SWAGGER_DESCRIPTION=API
+SWAGGER_VERSION=1.0
+SWAGGER_PATH=api
+
+LOCATION_DESCRIPTION_MAX_LENGTH=3000
+```
 
 #### 3. Start the postgres database
 
