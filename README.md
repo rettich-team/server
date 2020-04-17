@@ -3,16 +3,54 @@
 :wrench: Under construction
 
 ## Table of Contents
+
+- [Get Started](#get-started)
 - [Contribution](#contribution)
 - [License](#license)
 
-<a name="contribution"/>
+<a name="get-started"></a>
+
+### Get Started
+
+#### 1. Install node dependencies
+
+```sh
+npm i
+```
+
+If you have an error saying `npm Error: Cannot find module 'nan'`, just install `nan` globally:
+
+```sh
+npm i -g nan
+```
+
+#### 2. Configure your environment
+
+Copy `.env.sample` to `.env` and change the values as you need them
+
+#### 3. Start the postgres database
+
+- To start the database in a `Docker` container you need to install `Docker` on your system from [here](https://www.docker.com/products/docker-desktop).
+
+- When Docker is installed start the database like this:
+
+```sh
+docker-compose up -d
+```
+
+#### 4. Start the server
+
+```sh
+npm start
+```
+
+<a name="contribution"></a>
 
 ### Contribution
 
 Please have a look at [here](https://github.com/rettich-team/server/blob/master/CONTRIBUTING.md)
 
-<a name="license"/>
+<a name="license"></a>
 
 ### License
 
