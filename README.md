@@ -5,8 +5,8 @@
 ## Table of Contents
 
 - [Get Started](#get-started)
-- [Contribution](#contribution)
 - [API Documentation](#api-documentation)
+- [Contribution](#contribution)
 - [License](#license)
 
 <a name="get-started"></a>
@@ -47,7 +47,7 @@ LOCATION_DESCRIPTION_MAX_LENGTH=3000
 
 #### 3. Start the postgres database
 
-- To start the database in a `Docker` container you need to install `Docker` on your system from [here](https://www.docker.com/products/docker-desktop).
+- To start the database in a *Docker container* you need to install *Docker* on your system from [here](https://docs.docker.com/get-docker/).
 
 - When Docker is installed start the database like this:
 
@@ -60,20 +60,19 @@ docker-compose up -d
 ```sh
 npm start
 ```
-
-<a name="contribution"></a>
-
-### Contribution
-
-Please have a look at [here](https://github.com/rettich-team/server/blob/master/CONTRIBUTING.md)
-
 <a name="api-documentation"></a>
 
 ### API Documentation
 
 The api documentation is generated with [Swagger](https://docs.nestjs.com/recipes/swagger)
 
-To access it start your server in development mode and navigate to `/api-docs` (you can change the path in the environment variables -> SWAGGER_PATH)
+To access it start your server in development mode and navigate to `/api-docs` (you can change the path in the environment variables -> `SWAGGER_PATH`)
+
+<a name="contribution"></a>
+
+### Contribution
+
+Please have a look at [here](https://github.com/rettich-team/server/blob/master/CONTRIBUTING.md)
 
 <a name="license"></a>
 
