@@ -19,12 +19,6 @@
 npm i
 ```
 
-If you have an error saying `npm Error: Cannot find module 'nan'`, just install `nan` globally:
-
-```sh
-npm i -g nan
-```
-
 #### 2. Configure your environment
 
 Create an *.env* file in the root directory. You can use this sample configuration
