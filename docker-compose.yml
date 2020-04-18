@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:latest
     ports:
-      - '5432:5432'
+      - ${DATABASE_PORT}:5432
     environment:
-      POSTGRES_USER: rettich
-      POSTGRES_PASSWORD: rettich
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
