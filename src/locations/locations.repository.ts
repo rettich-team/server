@@ -30,7 +30,7 @@ export class LocationsRepository extends Repository<Location> {
     }
     
     public addLocation(addLocationDTO: AddLocationDTO): Promise<Location> {
-        const location: Location = new Location();
+        const location: Location = this.create();
         location.latitude = addLocationDTO.latitude;
         location.longitude = addLocationDTO.longitude;
         location.description = addLocationDTO.description;
