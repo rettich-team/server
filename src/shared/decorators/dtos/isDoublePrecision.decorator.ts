@@ -6,7 +6,7 @@ import {
 } from 'class-validator';
 
 @ValidatorConstraint()
-class IsDoublePrecisionConstraint implements ValidatorConstraintInterface {
+export class IsDoublePrecisionConstraint implements ValidatorConstraintInterface {
     public validate(value: any): boolean {
         if (typeof value === 'number') {
             if (value % 1 === 0) {
