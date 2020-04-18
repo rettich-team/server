@@ -57,6 +57,7 @@ describe('LocationsService', () => {
 
       const location: Location = await locationsService.getLocation(mockLocation.latitude, mockLocation.longitude);
 
+      expect(locationsRepository.getLocation).toHaveBeenCalledWith(mockLocation.latitude, mockLocation.longitude);
       expect(location).toEqual(mockLocation);
     });
 
@@ -65,15 +66,15 @@ describe('LocationsService', () => {
         .spyOn(locationsRepository, 'getLocation')
         .mockResolvedValue(null);
 
-      expect(locationsService.getLocation(0, 0)).rejects.toThrow(NotFoundException);
+      expect(locationsService.getLocation(mockLocation.latitude, mockLocation.longitude)).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('addLocation', () => {
     const addLocationDTO: AddLocationDTO = { 
-      latitude: 0, 
-      longitude: 0, 
-      description: ''
+      latitude: mockLocation.latitude, 
+      longitude: mockLocation.longitude, 
+      description: mockLocation.description
     };
 
     it('adds a location', async () => {
