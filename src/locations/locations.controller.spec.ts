@@ -5,16 +5,22 @@ import { LocationsService } from './locations.service';
 import { Location } from './location.entity';
 import { LocationFillingLevel } from './locationFillingLevel.enum';
 import { AddLocationDTO } from './dtos/addLocation.dto';
+import { LocationCoordinatesParamsDTO } from './dtos/locationCoordinates.params.dto';
+import { UpdateLocationDescriptionBodyDTO } from './dtos/updateLocationDescription/updateLocationDescription.body.dto';
+import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
 
 const mockLocationsService = () => ({
   getLocations: jest.fn(),
   getLocation: jest.fn(),
   addLocation: jest.fn(),
+  updateLocationDescription: jest.fn(),
 });
 
 describe('LocationsController', () => {
   let locationsController: LocationsController;
   let locationsService: LocationsService;
+
+  let mockLocation: Location;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,20 +35,20 @@ describe('LocationsController', () => {
 
     locationsController = module.get<LocationsController>(LocationsController);
     locationsService = module.get<LocationsService>(LocationsService);
-  });
 
-  const mockLocation: Location = {
-    latitude: 0,
-    longitude: 0,
-    description: '',
-    fillingLevel: LocationFillingLevel.EMPTY,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    hasId: null,
-    save: null,
-    remove: null,
-    reload: null,
-  };
+    mockLocation = {
+      latitude: 0,
+      longitude: 0,
+      description: '',
+      fillingLevel: LocationFillingLevel.EMPTY,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      hasId: null,
+      save: null,
+      remove: null,
+      reload: null,
+    };
+  });
 
   it('should be defined', () => {
     expect(locationsController).toBeDefined();
@@ -80,6 +86,29 @@ describe('LocationsController', () => {
 
       expect(locationsService.addLocation).toHaveBeenCalledWith(addLocationDTO);
       expect(location).toEqual(mockLocation);
+    });
+  });
+
+  describe('updateLocationDescription', () => {
+    it('updates the description of a location', async () => {
+      mockLocation.description = 'new description';
+      
+      jest
+        .spyOn(locationsService, 'updateLocationDescription')
+        .mockResolvedValue(mockLocation);
+      
+      const locationCoordinatesParamsDTO: LocationCoordinatesParamsDTO = { latitude: mockLocation.latitude, longitude: mockLocation.longitude };
+      const updateLocationDescriptionBodyDTO: UpdateLocationDescriptionBodyDTO = { description: mockLocation.description };
+      const updateLocationDescriptionDTO: UpdateLocationDescriptionDTO = { 
+        latitude: locationCoordinatesParamsDTO.latitude,
+        longitude: locationCoordinatesParamsDTO.longitude,
+        description: updateLocationDescriptionBodyDTO.description 
+      };
+
+      const updatedLocation: Location = await locationsController.updateLocationDescription(locationCoordinatesParamsDTO, updateLocationDescriptionBodyDTO);
+
+      expect(locationsService.updateLocationDescription).toHaveBeenCalledWith(updateLocationDescriptionDTO);
+      expect(updatedLocation).toEqual(mockLocation);
     });
   });
 });
