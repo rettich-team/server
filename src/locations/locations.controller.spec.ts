@@ -60,10 +60,12 @@ describe('LocationsController', () => {
         .spyOn(locationsService, 'getLocation')
         .mockResolvedValue(mockLocation);
 
-      const location: Location = await locationsController.getLocation({ 
+      const locationCoordinatesParamsDTO: LocationCoordinatesParamsDTO = { 
         latitude: mockLocation.latitude, 
         longitude: mockLocation.longitude 
-      });
+      };
+
+      const location: Location = await locationsController.getLocation(locationCoordinatesParamsDTO);
 
       expect(locationsService.getLocation).toHaveBeenCalledWith(mockLocation.latitude, mockLocation.longitude);
       expect(location).toEqual(mockLocation);
@@ -105,10 +107,10 @@ describe('LocationsController', () => {
         description: updateLocationDescriptionBodyDTO.description 
       };
 
-      const updatedLocation: Location = await locationsController.updateLocationDescription(locationCoordinatesParamsDTO, updateLocationDescriptionBodyDTO);
+      const location: Location = await locationsController.updateLocationDescription(locationCoordinatesParamsDTO, updateLocationDescriptionBodyDTO);
 
       expect(locationsService.updateLocationDescription).toHaveBeenCalledWith(updateLocationDescriptionDTO);
-      expect(updatedLocation).toEqual(mockLocation);
+      expect(location).toEqual(mockLocation);
     });
   });
 });
