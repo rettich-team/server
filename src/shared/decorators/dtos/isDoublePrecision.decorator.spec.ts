@@ -55,7 +55,7 @@ describe('IsDoublePrecisionConstraint', () => {
                 property
             });
 
-            expect(defaultMessage).toEqual(`${property} must have less than or equal to 15 decimal digits.`);
+            expect(defaultMessage.startsWith(property)).toBeTruthy();
         });
     });
 });
