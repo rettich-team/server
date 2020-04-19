@@ -8,12 +8,14 @@ import { Location } from './location.entity';
 import { LocationFillingLevel } from './locationFillingLevel.enum';
 import { AddLocationDTO } from './dtos/addLocation.dto';
 import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
+import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.dto';
 
 const mockLocationsRepository = () => ({
   getLocations: jest.fn(),
   getLocation: jest.fn(),
   addLocation: jest.fn(),
   updateLocationDescription: jest.fn(),
+  updateLocationFillingLevel: jest.fn(),
 });
 
 describe('LocationsService', () => {
@@ -130,10 +132,10 @@ describe('LocationsService', () => {
         .spyOn(locationsRepository, 'getLocation')
         .mockResolvedValue(mockLocation);
 
-      const updatedLocation: Location = await locationsService.updateLocationDescription(updateLocationDescriptionDTO);
+      const location: Location = await locationsService.updateLocationDescription(updateLocationDescriptionDTO);
 
       expect(locationsRepository.updateLocationDescription).toHaveBeenCalledWith(updateLocationDescriptionDTO);
-      expect(updatedLocation).toEqual(mockLocation);
+      expect(location).toEqual(mockLocation);
     });
 
     it('throws a NotFoundException if the location was not found', () => {
@@ -144,6 +146,47 @@ describe('LocationsService', () => {
         .mockResolvedValue(updateResult);
 
       expect(locationsService.updateLocationDescription(updateLocationDescriptionDTO)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('updateLocationFillingLevel', () => {
+    let updateLocationFillingLevelDTO: UpdateLocationFillingLevelDTO;
+
+    beforeEach(() => {
+      mockLocation.fillingLevel = LocationFillingLevel.FULL;
+
+      updateLocationFillingLevelDTO = { 
+        latitude: mockLocation.latitude,
+        longitude: mockLocation.longitude,
+        fillingLevel: mockLocation.fillingLevel 
+      };
+    });
+
+    it('updates the filling level of a location', async () => {
+      const updateResult: UpdateResult = { raw: null, generatedMaps: null, affected: 1 };
+      
+      jest
+        .spyOn(locationsRepository, 'updateLocationFillingLevel')
+        .mockResolvedValue(updateResult);
+
+      jest
+        .spyOn(locationsRepository, 'getLocation')
+        .mockResolvedValue(mockLocation);
+
+      const location: Location = await locationsService.updateLocationFillingLevel(updateLocationFillingLevelDTO);
+
+      expect(locationsRepository.updateLocationFillingLevel).toHaveBeenCalledWith(updateLocationFillingLevelDTO);
+      expect(location).toEqual(mockLocation);
+    });
+
+    it('throws a NotFoundException if the location was not found', () => {
+      const updateResult: UpdateResult = { raw: null, generatedMaps: null, affected: 0 };
+      
+      jest
+        .spyOn(locationsRepository, 'updateLocationFillingLevel')
+        .mockResolvedValue(updateResult);
+
+      expect(locationsService.updateLocationFillingLevel(updateLocationFillingLevelDTO)).rejects.toThrow(NotFoundException);
     });
   });
 });
