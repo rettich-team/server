@@ -10,6 +10,7 @@ import { UpdateLocationDescriptionBodyDTO } from './dtos/updateLocationDescripti
 import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
 import { UpdateLocationFillingLevelBodyDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.body.dto';
 import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.dto';
+import { GetLocationsDTO } from './dtos/getLocations.dto';
 
 const mockLocationsService = () => ({
   getLocations: jest.fn(),
@@ -55,6 +56,22 @@ describe('LocationsController', () => {
 
   it('should be defined', () => {
     expect(locationsController).toBeDefined();
+  });
+
+  describe('getLocations', () => {
+    it('returns locations', async () => {
+      const mockLocations: Location[] = [];
+      
+      jest
+        .spyOn(locationsService, 'getLocations')
+        .mockResolvedValue(mockLocations);
+
+      const getLocationsDTO: GetLocationsDTO = {};
+      const locations: Location[] = await locationsController.getLocations(getLocationsDTO);
+
+      expect(locationsService.getLocations).toHaveBeenCalledWith(getLocationsDTO);
+      expect(locations).toEqual(mockLocations);
+    });
   });
 
   describe('getLocation', () => {
