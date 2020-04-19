@@ -8,12 +8,15 @@ import { AddLocationDTO } from './dtos/addLocation.dto';
 import { LocationCoordinatesParamsDTO } from './dtos/locationCoordinates.params.dto';
 import { UpdateLocationDescriptionBodyDTO } from './dtos/updateLocationDescription/updateLocationDescription.body.dto';
 import { UpdateLocationDescriptionDTO } from './dtos/updateLocationDescription/updateLocationDescription.dto';
+import { UpdateLocationFillingLevelBodyDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.body.dto';
+import { UpdateLocationFillingLevelDTO } from './dtos/updateLocationFillingLevel/updateLocationFillingLevel.dto';
 
 const mockLocationsService = () => ({
   getLocations: jest.fn(),
   getLocation: jest.fn(),
   addLocation: jest.fn(),
   updateLocationDescription: jest.fn(),
+  updateLocationFillingLevel: jest.fn(),
 });
 
 describe('LocationsController', () => {
@@ -110,6 +113,29 @@ describe('LocationsController', () => {
       const location: Location = await locationsController.updateLocationDescription(locationCoordinatesParamsDTO, updateLocationDescriptionBodyDTO);
 
       expect(locationsService.updateLocationDescription).toHaveBeenCalledWith(updateLocationDescriptionDTO);
+      expect(location).toEqual(mockLocation);
+    });
+  });
+
+  describe('updateLocationFillingLevel', () => {
+    it('updates the filling level of a location', async () => {
+      mockLocation.fillingLevel = LocationFillingLevel.FULL;
+      
+      jest
+        .spyOn(locationsService, 'updateLocationFillingLevel')
+        .mockResolvedValue(mockLocation);
+      
+      const locationCoordinatesParamsDTO: LocationCoordinatesParamsDTO = { latitude: mockLocation.latitude, longitude: mockLocation.longitude };
+      const updateLocationFillingLevelBodyDTO: UpdateLocationFillingLevelBodyDTO = { fillingLevel: mockLocation.fillingLevel };
+      const updateLocationFillingLevelDTO: UpdateLocationFillingLevelDTO = {
+        latitude: locationCoordinatesParamsDTO.latitude,
+        longitude: locationCoordinatesParamsDTO.longitude,
+        fillingLevel: updateLocationFillingLevelBodyDTO.fillingLevel 
+      };
+
+      const location: Location = await locationsController.updateLocationFillingLevel(locationCoordinatesParamsDTO, updateLocationFillingLevelBodyDTO);
+
+      expect(locationsService.updateLocationFillingLevel).toHaveBeenCalledWith(updateLocationFillingLevelDTO);
       expect(location).toEqual(mockLocation);
     });
   });
