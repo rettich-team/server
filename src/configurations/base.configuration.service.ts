@@ -1,13 +1,18 @@
 import { ConfigService } from '@nestjs/config';
-import { AnySchema, ValidationResult, ValidationError } from '@hapi/joi';
+import { AnySchema } from '@hapi/joi';
+
+import { ConfigurationValidationService } from './configuration.validation.service';
 
 export abstract class BaseConfigurationService {
-    constructor(protected readonly configService: ConfigService) {}
+    constructor(
+        protected readonly configService: ConfigService,
+        protected readonly configurationValidationService: ConfigurationValidationService
+    ) {}
 
     protected constructValue(key: string, validator: AnySchema): string {
         const rawValue: string = this.configService.get(key);
 
-        this.validateValue(rawValue, validator, key);
+        this.configurationValidationService.validateValue(rawValue, validator, key);
 
         return rawValue;
     }
@@ -16,18 +21,8 @@ export abstract class BaseConfigurationService {
         const rawValue: string = this.configService.get(key);
         const parsedValue: TResult = parser(rawValue);
 
-        this.validateValue(parsedValue, validator, key);
+        this.configurationValidationService.validateValue(parsedValue, validator, key);
         
         return parsedValue;
-    }
-
-    private validateValue<TValue>(value: TValue, validator: AnySchema, label: string): void {
-        const validationSchema: AnySchema = validator.label(label);
-        const validationResult: ValidationResult = validationSchema.validate(value);
-        const validationError: ValidationError = validationResult.error;
-
-        if (validationError) {
-            throw validationError;
-        }
     }
 }

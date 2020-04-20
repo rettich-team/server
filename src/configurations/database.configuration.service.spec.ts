@@ -2,9 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 
 import { DatabaseConfigurationService } from './database.configuration.service';
+import { ConfigurationValidationService } from './configuration.validation.service';
 
 const mockConfigService = () => ({
   get: jest.fn(),
+});
+
+const mockConfigurationValidationService = () => ({
+  validateValue: jest.fn().mockImplementation(() => { return; }),
 });
 
 describe('DatabaseConfigurationService', () => {
@@ -17,6 +22,10 @@ describe('DatabaseConfigurationService', () => {
         {
           provide: ConfigService,
           useFactory: mockConfigService 
+        },
+        {
+          provide: ConfigurationValidationService,
+          useFactory: mockConfigurationValidationService 
         }
       ],
     }).compile();

@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
 import { BaseConfigurationService } from './base.configuration.service';
+import { ConfigurationValidationService } from './configuration.validation.service';
 
 @Injectable()
 export class DatabaseConfigurationService extends BaseConfigurationService {
@@ -16,8 +17,11 @@ export class DatabaseConfigurationService extends BaseConfigurationService {
     public logging: boolean;
     public synchronize: boolean;
     
-    constructor(protected readonly configService: ConfigService) {
-        super(configService);
+    constructor(
+        protected readonly configService: ConfigService,
+        protected readonly configurationValidationService: ConfigurationValidationService
+    ) {
+        super(configService, configurationValidationService);
         const prefix = 'DATABASE_';
 
         this.type = this.constructValue(

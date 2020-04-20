@@ -2,9 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 
 import { SwaggerConfigurationService } from './swagger.configuration.service';
+import { ConfigurationValidationService } from './configuration.validation.service';
 
 const mockConfigService = () => ({
   get: jest.fn(),
+});
+
+const mockConfigurationValidationService = () => ({
+  validateValue: jest.fn().mockImplementation(() => { return; }),
 });
 
 describe('SwaggerConfigurationService', () => {
@@ -17,6 +22,10 @@ describe('SwaggerConfigurationService', () => {
         { 
           provide: ConfigService,
           useFactory: mockConfigService 
+        },
+        {
+          provide: ConfigurationValidationService,
+          useFactory: mockConfigurationValidationService 
         }
       ],
     }).compile();
