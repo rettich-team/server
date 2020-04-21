@@ -7,7 +7,6 @@ import {
   IsLatitude,
   IsLongitude,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { LocationFillingLevel } from '../locationFillingLevel.enum';
@@ -29,16 +28,11 @@ export class AddLocationDTO {
   @IsString()
   @MaxLength(Number(process.env.LOCATION_DESCRIPTION_MAX_LENGTH))
   @IsOptional()
-  @Transform((description: string) => description || '')
   @ApiProperty()
-  public description: string;
+  public description = '';
 
   @IsEnum(LocationFillingLevel)
   @IsOptional()
-  @Transform(
-    (fillingLevel: LocationFillingLevel) =>
-      fillingLevel || LocationFillingLevel.FULL,
-  )
   @ApiProperty()
-  public fillingLevel?: LocationFillingLevel;
+  public fillingLevel = LocationFillingLevel.FULL;
 }
