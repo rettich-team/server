@@ -10,7 +10,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 import { LocationFillingLevel } from '../locationFillingLevel.enum';
-import { IsDoublePrecision } from '../../shared/decorators/dtos/isDoublePrecision.decorator';
+import { IsDoublePrecision } from '../../shared/decorators/isDoublePrecision.decorator';
 
 export class AddLocationDTO {
   @IsNumber()
