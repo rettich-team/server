@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
 import { BaseConfigurationService } from './base.configuration.service';
-import { ConfigurationValidationService } from './configuration.validation.service';
+import { ValueSchemaValidationService } from '../shared/validators/valueSchemaValidation.service';
 
 @Injectable()
 export class SwaggerConfigurationService extends BaseConfigurationService {
@@ -14,9 +14,9 @@ export class SwaggerConfigurationService extends BaseConfigurationService {
     
     constructor(
         protected readonly configService: ConfigService,
-        protected readonly configurationValidationService: ConfigurationValidationService
+        protected readonly valueSchemaValidationService: ValueSchemaValidationService
     ) {
-        super(configService, configurationValidationService);
+        super(configService, valueSchemaValidationService);
         this.title = this.constructValue(
             'SWAGGER_TITLE',
             Joi.string().required()

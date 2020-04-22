@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { ConfigurationValidationService } from './configuration.validation.service';
+import { ValueSchemaValidationService } from '../shared/validators/valueSchemaValidation.service';
 import { ServerConfigurationService } from './server.configuration.service';
 import { EnvironmentConfigurationService } from './environment.configuration.service';
 import { DatabaseConfigurationService } from './database.configuration.service';
@@ -11,7 +11,7 @@ import { LocationConfigurationService } from './location.configuration.service';
 @Module({
   imports: [ConfigModule.forRoot()],
   providers: [
-    ConfigurationValidationService,
+    ValueSchemaValidationService,
     ServerConfigurationService,
     EnvironmentConfigurationService,
     DatabaseConfigurationService,
