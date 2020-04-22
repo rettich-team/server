@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
-import { ValueSchemaValidationService } from '../shared/validators/valueSchemaValidation.service';
+import { BaseConfigurationService } from './base.configuration.service';
+import { SchemaValidationService } from '../shared/validators/schemaValidation.service';
 
 @Injectable()
-export class DatabaseConfigurationService {
+export class DatabaseConfigurationService extends BaseConfigurationService {
     public type: string;
     public host: string;
     public port: number;
@@ -15,28 +16,48 @@ export class DatabaseConfigurationService {
     public entities: string[];
     public logging: boolean;
     public synchronize: boolean;
-    
+
     constructor(
-        private readonly configService: ConfigService,
-        private readonly valueSchemaValidationService: ValueSchemaValidationService
+        protected readonly configService: ConfigService, 
+        protected readonly schemaValidationService: SchemaValidationService,
     ) {
+        super(configService, schemaValidationService, [{
+            field: 'type',
+            environmentKey: 'DATABASE_TYPE',
+            validator: Joi.string().valid('postgres', 'mssql').required(),
+        }, {
+            field: 'host',
+            environmentKey: 'DATABASE_HOST',
+            validator: Joi.string().required(),
+        }, {
+            field: 'port',
+            environmentKey: 'DATABASE_PORT',
+            validator: Joi.number().port().required(),
+            parser: Number,
+        }, {
+            field: 'username',
+            environmentKey: 'DATABASE_USERNAME',
+            validator: Joi.string().allow('').optional(),
+        }, {
+            field: 'password',
+            environmentKey: 'DATABASE_PASSWORD',
+            validator: Joi.string().allow('').optional(),
+        }, {
+            field: 'database',
+            environmentKey: 'DATABASE_NAME',
+            validator: Joi.string().required(),
+        }, {
+            field: 'logging',
+            environmentKey: 'DATABASE_LOGGING',
+            validator: Joi.string().valid('true', 'false').optional(),
+            parser: (value: string) => value === 'true',
+        }, {
+            field: 'synchronize',
+            environmentKey: 'DATABASE_SYNCHRONIZE',
+            validator: Joi.string().valid('true', 'false').optional(),
+            parser: (value: string) => value === 'true',
+        }]);
+
         this.entities = [`${__dirname}/../**/*.entity.{ts,js}`];
-
-        this.setField('type', 'TYPE', Joi.string().valid('postgres', 'mssql').required());
-        this.setField('host', 'HOST', Joi.string().required());
-        this.setField('port', 'PORT', Joi.number().port().required(), Number);
-        this.setField('username', 'USERNAME', Joi.string().allow('').optional());
-        this.setField('password', 'PASSWORD', Joi.string().allow('').optional());
-        this.setField('database', 'NAME', Joi.string().required());
-        this.setField('logging', 'LOGGING', Joi.string().valid('true', 'false').optional(), (value: string) => value === 'true');
-        this.setField('synchronize', 'SYNCHRONIZE', Joi.string().valid('true', 'false').optional(), (value: string) => value === 'true');
-    }
-
-    private setField(field: string, fieldName: string, validator: Joi.AnySchema, parser?: (value: string) => any): void {
-        const fieldKey = `DATABASE_${fieldName}`;
-        const fieldValue: string = this.configService.get(fieldKey);
-
-        this.valueSchemaValidationService.validateValue(fieldValue, validator, fieldKey);
-        this[field] = parser ? parser(fieldValue) : fieldValue;
     }
 }

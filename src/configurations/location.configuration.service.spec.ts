@@ -2,14 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 
 import { LocationConfigurationService } from './location.configuration.service';
-import { ValueSchemaValidationService } from '../shared/validators/valueSchemaValidation.service';
+import { SchemaValidationService } from '../shared/validators/schemaValidation.service';
 
 const mockConfigService = () => ({
   get: jest.fn(),
 });
 
-const mockValueSchemaValidationService = () => ({
-  validateValue: jest.fn().mockImplementation(() => { return; }),
+const mockSchemaValidationService = () => ({
+  validate: jest.fn().mockImplementation(() => { return; }),
 });
 
 describe('LocationConfigurationService', () => {
@@ -24,8 +24,8 @@ describe('LocationConfigurationService', () => {
           useFactory: mockConfigService 
         },
         {
-          provide: ValueSchemaValidationService,
-          useFactory: mockValueSchemaValidationService 
+          provide: SchemaValidationService,
+          useFactory: mockSchemaValidationService 
         }
       ],
     }).compile();

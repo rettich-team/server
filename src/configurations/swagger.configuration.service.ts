@@ -2,30 +2,36 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
-import { ValueSchemaValidationService } from '../shared/validators/valueSchemaValidation.service';
+import { BaseConfigurationService } from './base.configuration.service';
+import { SchemaValidationService } from '../shared/validators/schemaValidation.service';
 
 @Injectable()
-export class SwaggerConfigurationService {
+export class SwaggerConfigurationService extends BaseConfigurationService {
     public readonly title: string;
     public readonly description: string;
     public readonly version: string;
     public readonly path: string;
     
     constructor(
-        private readonly configService: ConfigService,
-        private readonly valueSchemaValidationService: ValueSchemaValidationService
+        protected readonly configService: ConfigService, 
+        protected readonly schemaValidationService: SchemaValidationService,
     ) {
-        this.setField('title', 'TITLE');
-        this.setField('description', 'DESCRIPTION');
-        this.setField('version', 'VERSION');
-        this.setField('path', 'PATH');
-    }
-
-    private setField(field: string, fieldName: string): void {
-        const fieldKey = `SWAGGER_${fieldName}`;
-        const fieldValue: string = this.configService.get(fieldKey);
-        
-        this.valueSchemaValidationService.validateValue(fieldValue, Joi.string().required(), fieldKey);
-        this[field] = fieldValue;
+        super(configService, schemaValidationService, [{
+            field: 'title',
+            environmentKey: 'SWAGGER_TITLE',
+            validator: Joi.string().required(),
+        }, {
+            field: 'description',
+            environmentKey: 'SWAGGER_DESCRIPTION',
+            validator: Joi.string().required(),
+        }, {
+            field: 'version',
+            environmentKey: 'SWAGGER_VERSION',
+            validator: Joi.string().required(),
+        }, {
+            field: 'path',
+            environmentKey: 'SWAGGER_PATH',
+            validator: Joi.string().required(),
+        }]);
     }
 }
