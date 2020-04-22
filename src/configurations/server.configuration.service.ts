@@ -2,22 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
-import { BaseConfigurationService } from './base.configuration.service';
 import { ValueSchemaValidationService } from '../shared/validators/valueSchemaValidation.service';
 
 @Injectable()
-export class ServerConfigurationService extends BaseConfigurationService {
+export class ServerConfigurationService {
     public readonly port: number;
     
     constructor(
-        protected readonly configService: ConfigService,
-        protected readonly valueSchemaValidationService: ValueSchemaValidationService
+        private readonly configService: ConfigService,
+        private readonly valueSchemaValidationService: ValueSchemaValidationService
     ) {
-        super(configService, valueSchemaValidationService);
-        this.port = this.constructAndParseValue<number>(
-            'SERVER_PORT', 
-            Joi.number().port().required(), 
-            Number
-        );
+        const serverPort = 'SERVER_PORT';
+        this.port = this.configService.get(serverPort);
+        this.valueSchemaValidationService.validateValue(this.port, Joi.number().port().required(), serverPort);
+        this.port = Number(this.port);
     }
 }

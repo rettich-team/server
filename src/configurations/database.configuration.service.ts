@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
-import { BaseConfigurationService } from './base.configuration.service';
 import { ValueSchemaValidationService } from '../shared/validators/valueSchemaValidation.service';
 
 @Injectable()
-export class DatabaseConfigurationService extends BaseConfigurationService {
+export class DatabaseConfigurationService {
     public type: string;
     public host: string;
     public port: number;
@@ -18,47 +17,26 @@ export class DatabaseConfigurationService extends BaseConfigurationService {
     public synchronize: boolean;
     
     constructor(
-        protected readonly configService: ConfigService,
-        protected readonly valueSchemaValidationService: ValueSchemaValidationService
+        private readonly configService: ConfigService,
+        private readonly valueSchemaValidationService: ValueSchemaValidationService
     ) {
-        super(configService, valueSchemaValidationService);
-        const prefix = 'DATABASE_';
-
-        this.type = this.constructValue(
-            `${prefix}TYPE`,
-            Joi.string().valid('postgres', 'mssql').required(),
-        );
-        this.host = this.constructValue(
-            `${prefix}HOST`,
-            Joi.string().required(),
-        );
-        this.port = this.constructAndParseValue<number>(
-            `${prefix}PORT`,
-            Joi.number().port().required(),
-            Number
-        );
-        this.username = this.constructValue(
-            `${prefix}USERNAME`,
-            Joi.string().allow('').optional(),
-        );
-        this.password = this.constructValue(
-            `${prefix}PASSWORD`,
-            Joi.string().allow('').optional(),
-        );
-        this.database = this.constructValue(
-            `${prefix}NAME`,
-            Joi.string().required(),
-        );
         this.entities = [`${__dirname}/../**/*.entity.{ts,js}`];
-        this.logging = this.constructAndParseValue<boolean>(
-            `${prefix}LOGGING`,
-            Joi.boolean().optional(),
-            (value: string) => value === 'true'
-        );
-        this.synchronize = this.constructAndParseValue<boolean>(
-            `${prefix}SYNCHRONIZE`,
-            Joi.boolean().required(),
-            (value: string) => value === 'true'
-        );
+
+        this.setField('type', 'TYPE', Joi.string().valid('postgres', 'mssql').required());
+        this.setField('host', 'HOST', Joi.string().required());
+        this.setField('port', 'PORT', Joi.number().port().required(), Number);
+        this.setField('username', 'USERNAME', Joi.string().allow('').optional());
+        this.setField('password', 'PASSWORD', Joi.string().allow('').optional());
+        this.setField('database', 'NAME', Joi.string().required());
+        this.setField('logging', 'LOGGING', Joi.string().valid('true', 'false').optional(), (value: string) => value === 'true');
+        this.setField('synchronize', 'SYNCHRONIZE', Joi.string().valid('true', 'false').optional(), (value: string) => value === 'true');
+    }
+
+    private setField(field: string, fieldName: string, validator: Joi.AnySchema, parser?: (value: string) => any): void {
+        const fieldKey = `DATABASE_${fieldName}`;
+        const fieldValue: string = this.configService.get(fieldKey);
+
+        this.valueSchemaValidationService.validateValue(fieldValue, validator, fieldKey);
+        this[field] = parser ? parser(fieldValue) : fieldValue;
     }
 }
