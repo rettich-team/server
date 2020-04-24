@@ -101,7 +101,8 @@ describe('LocationsService', () => {
       addLocationDTO = { 
         latitude: mockLocation.latitude, 
         longitude: mockLocation.longitude, 
-        description: mockLocation.description
+        description: mockLocation.description,
+        fillingLevel: mockLocation.fillingLevel,
       };
     });
 

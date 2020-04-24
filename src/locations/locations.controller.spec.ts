@@ -101,7 +101,8 @@ describe('LocationsController', () => {
       const addLocationDTO: AddLocationDTO = { 
         latitude: mockLocation.latitude,
         longitude: mockLocation.longitude, 
-        description: mockLocation.description
+        description: mockLocation.description,
+        fillingLevel: mockLocation.fillingLevel,
       };
       
       const location: Location = await locationsController.addLocation(addLocationDTO);
