@@ -9,7 +9,12 @@ export class LocationCoordinatesParamsDTO {
     @IsDoublePrecision()
     @IsLatitude()
     @Type(() => Number)
-    @ApiProperty()
+    @ApiProperty({
+        name: 'latitude',
+        required: true,
+        description: 'The latitude of a location up to 15 decimal digits.',
+        type: Number
+    })
     public latitude: number;
 
     @IsNumber()
@@ -17,5 +22,11 @@ export class LocationCoordinatesParamsDTO {
     @IsLongitude()
     @Type(() => Number)
     @ApiProperty()
+    @ApiProperty({
+        name: 'longitude',
+        required: true,
+        description: 'The longitude of a location up to 15 decimal digits.',
+        type: Number
+    })
     public longitude: number;
 }
