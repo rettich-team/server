@@ -21,7 +21,6 @@ export class LocationCoordinatesParamsDTO {
     @IsDoublePrecision()
     @IsLongitude()
     @Type(() => Number)
-    @ApiProperty()
     @ApiProperty({
         name: 'longitude',
         required: true,
