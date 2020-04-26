@@ -5,7 +5,10 @@ import {
   Get,
   Param,
   Patch,
-  Query
+  Query,
+  BadRequestException,
+  NotFoundException,
+  ConflictException
 } from '@nestjs/common';
 import {
   ApiOkResponse,
@@ -17,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiTags,
+  ApiOperation,
 } from '@nestjs/swagger';
 
 import { LocationsService } from './locations.service';
@@ -35,8 +39,17 @@ export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
   @Get()
-  @ApiOkResponse({ description: 'Collection of locations' })
-  @ApiBadRequestResponse({ description: 'Invalid queries' })
+  @ApiOperation({ summary: 'Get filtered locations.' })
+  @ApiOkResponse({ 
+    description: 'A collection of filtered locations.',
+    type: Location,
+    isArray: true,
+  })
+  @ApiBadRequestResponse({ 
+    description: 'Invalid queries.',
+    type: BadRequestException,
+  })
+  // @ApiQuery({ type: GetLocationsDTO })
   public getLocations(
     @Query() getLocationsDTO: GetLocationsDTO,
   ): Promise<Location[]> {
@@ -44,9 +57,20 @@ export class LocationsController {
   }
 
   @Get(':latitude/:longitude')
-  @ApiOkResponse({ description: 'One location' })
-  @ApiNotFoundResponse({ description: 'Location not found' })
-  @ApiBadRequestResponse({ description: 'Invalid params' })
+  @ApiOperation({ summary: 'Get one location.' })
+  @ApiOkResponse({ 
+    description: 'The found location.',
+    type: Location,
+  })
+  @ApiNotFoundResponse({ 
+    description: 'Location not found.',
+    type: NotFoundException, 
+  })
+  @ApiBadRequestResponse({ 
+    description: 'Invalid params.',
+    type: BadRequestException, 
+  })
+  // @ApiParam({ type: LocationCoordinatesParamsDTO })
   public getLocation(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
   ): Promise<Location> {
@@ -54,9 +78,19 @@ export class LocationsController {
   }
 
   @Post()
-  @ApiCreatedResponse({ description: 'Added location' })
-  @ApiConflictResponse({ description: 'Location already exists' })
-  @ApiBadRequestResponse({ description: 'Invalid body' })
+  @ApiOperation({ summary: 'Add a location.' })
+  @ApiCreatedResponse({ 
+    description: 'The added location.',
+    type: Location,
+  })
+  @ApiConflictResponse({ 
+    description: 'The location already exists.',
+    type: ConflictException, 
+  })
+  @ApiBadRequestResponse({ 
+    description: 'Invalid body.',
+    type: BadRequestException, 
+  })
   @ApiBody({ type: AddLocationDTO })
   public addLocation(
     @Body() addLocationDTO: AddLocationDTO,
@@ -65,9 +99,20 @@ export class LocationsController {
   }
 
   @Patch(':latitude/:longitude/description')
-  @ApiOkResponse({ description: 'Updated location' })
-  @ApiNotFoundResponse({ description: 'Location not found' })
-  @ApiBadRequestResponse({ description: 'Invalid params or body' })
+  @ApiOperation({ summary: 'Update the description of a location.' })
+  @ApiOkResponse({ 
+    description: 'The updated location.',
+    type: Location, 
+  })
+  @ApiNotFoundResponse({ 
+    description: 'The location was not found.',
+    type: NotFoundException, 
+  })
+  @ApiBadRequestResponse({ 
+    description: 'Invalid params or body.',
+    type: BadRequestException, 
+  })
+  // @ApiParam({  })
   @ApiBody({ type: UpdateLocationDescriptionBodyDTO })
   public updateLocationDescription(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
@@ -78,9 +123,20 @@ export class LocationsController {
   }
 
   @Patch(':latitude/:longitude/fillingLevel')
-  @ApiOkResponse({ description: 'Updated location' })
-  @ApiNotFoundResponse({ description: 'Location not found' })
-  @ApiBadRequestResponse({ description: 'Invalid params or body' })
+  @ApiOperation({ summary: 'Update the filling level of a location.' })
+  @ApiOkResponse({ 
+    description: 'The updated location.',
+    type: Location,
+  })
+  @ApiNotFoundResponse({ 
+    description: 'The location was not found.',
+    type: NotFoundException, 
+  })
+  @ApiBadRequestResponse({ 
+    description: 'Invalid params or body.',
+    type: BadRequestException, 
+  })
+  // @ApiParam({  })
   @ApiBody({ type: UpdateLocationDescriptionBodyDTO })
   public updateLocationFillingLevel(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
