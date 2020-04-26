@@ -8,7 +8,7 @@ import { GetLocationsDTO } from './dtos/getLocations.dto';
 
 @EntityRepository(Location)
 export class LocationsRepository extends Repository<Location> {
-    public getLocations({ fillingLevel, partialDescription, skip, take }: GetLocationsDTO): Promise<Location[]> {
+    public getLocations({ fillingLevel, partialDescription, skip, take, latitude, longitude, radiusInKilometers }: GetLocationsDTO): Promise<Location[]> {
         const query: SelectQueryBuilder<Location> = this.createQueryBuilder('location');
 
         if (fillingLevel) {
@@ -17,6 +17,20 @@ export class LocationsRepository extends Repository<Location> {
 
         if (partialDescription) {
             query.andWhere("location.description LIKE :description", { description: `%${partialDescription}%` });
+        }
+
+        if(latitude && longitude && radiusInKilometers) {
+            query.andWhere(`6371 * acos(
+                                cos(radians(:latitude)) *
+                                cos(radians(location.latitude)) *
+                                cos(radians(location.longitude) - radians(:longitude)) +
+                                sin(radians(:latitude)) *
+                                sin(radians(location.latitude))
+                            ) <= :radiusInKilometers`, { 
+                latitude,
+                longitude,
+                radiusInKilometers, 
+            });
         }
 
         return query
