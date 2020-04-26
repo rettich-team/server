@@ -5,7 +5,6 @@ import { LocationFillingLevel } from '../../locationFillingLevel.enum';
 
 export class UpdateLocationFillingLevelBodyDTO {
     @IsEnum(LocationFillingLevel)
-    @ApiProperty()
     @ApiProperty({
         name: 'fillingLevel',
         required: true,
