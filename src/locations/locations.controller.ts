@@ -16,9 +16,6 @@ import {
   ApiConflictResponse,
   ApiNotFoundResponse,
   ApiBadRequestResponse,
-  ApiBody,
-  ApiParam,
-  ApiQuery,
   ApiTags,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -49,7 +46,6 @@ export class LocationsController {
     description: 'Invalid queries.',
     type: BadRequestException,
   })
-  // @ApiQuery({ type: GetLocationsDTO })
   public getLocations(
     @Query() getLocationsDTO: GetLocationsDTO,
   ): Promise<Location[]> {
@@ -70,7 +66,6 @@ export class LocationsController {
     description: 'Invalid params.',
     type: BadRequestException, 
   })
-  // @ApiParam({ type: LocationCoordinatesParamsDTO })
   public getLocation(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
   ): Promise<Location> {
@@ -91,7 +86,6 @@ export class LocationsController {
     description: 'Invalid body.',
     type: BadRequestException, 
   })
-  @ApiBody({ type: AddLocationDTO })
   public addLocation(
     @Body() addLocationDTO: AddLocationDTO,
   ): Promise<Location> {
@@ -112,8 +106,6 @@ export class LocationsController {
     description: 'Invalid params or body.',
     type: BadRequestException, 
   })
-  // @ApiParam({  })
-  @ApiBody({ type: UpdateLocationDescriptionBodyDTO })
   public updateLocationDescription(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
     @Body() { description }: UpdateLocationDescriptionBodyDTO,
@@ -134,10 +126,8 @@ export class LocationsController {
   })
   @ApiBadRequestResponse({ 
     description: 'Invalid params or body.',
-    type: BadRequestException, 
+    type: BadRequestException,
   })
-  // @ApiParam({  })
-  @ApiBody({ type: UpdateLocationDescriptionBodyDTO })
   public updateLocationFillingLevel(
     @Param() { latitude, longitude }: LocationCoordinatesParamsDTO,
     @Body() { fillingLevel }: UpdateLocationFillingLevelBodyDTO,
