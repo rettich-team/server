@@ -4,22 +4,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: api_service
     ports:
       - ${SERVER_PORT}:3000
     depends_on:
-      - db-service
+      - db_service
   db_service:
     image: postgres:latest
-    container_name: db_service
     restart: unless-stopped
     ports:
       - ${DATABASE_PORT}:5432
-    environment:
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
-      PGPORT: 5432
-      PGDATA: /data/postgres
+    env_file: .env
     volumes:
       - postgres:/data/postgres
