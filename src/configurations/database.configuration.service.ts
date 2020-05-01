@@ -16,6 +16,10 @@ export class DatabaseConfigurationService extends BaseConfigurationService {
     public entities: string[];
     public logging: boolean;
     public synchronize: boolean;
+    public migrationsTableName: string;
+    public migrations: string[];
+    public migrationsDir: string;
+    public migrationsRun: boolean;
 
     constructor(
         protected readonly configService: ConfigService, 
@@ -56,8 +60,16 @@ export class DatabaseConfigurationService extends BaseConfigurationService {
             environmentKey: 'DATABASE_SYNCHRONIZE',
             validator: Joi.string().valid('true', 'false').optional(),
             parser: (value: string) => value === 'true',
+        }, {
+            field: 'migrationsRun',
+            environmentKey: 'DATABASE_MIGRATIONS_RUN',
+            validator: Joi.string().valid('true', 'false').optional(),
+            parser: (value: string) => value === 'true',
         }]);
 
         this.entities = [`${__dirname}/../**/*.entity.{ts,js}`];
+        this.migrationsTableName = 'migration';
+        this.migrations = [`${__dirname}/../migrations/**/*.entity.{ts,js}`];
+        this.migrationsDir = 'src/migrations';
     }
 }

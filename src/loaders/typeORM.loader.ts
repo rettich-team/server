@@ -18,6 +18,11 @@ export class TypeOrmLoader implements TypeOrmOptionsFactory {
       entities: this.databaseConfigurationService.entities,
       logging: this.databaseConfigurationService.logging,
       synchronize: this.databaseConfigurationService.synchronize,
+      migrationsTableName: this.databaseConfigurationService.migrationsTableName,
+      migrations: this.databaseConfigurationService.migrations,
+      cli: {
+       migrationsDir: this.databaseConfigurationService.migrationsDir,
+      }
     };
   }
 }
