@@ -36,7 +36,7 @@ export class DatabaseConfigurationService extends BaseConfigurationService {
         }, {
             field: 'port',
             environmentKey: 'DATABASE_PORT',
-            validator: Joi.number().port().required(),
+            validator: Joi.number().port().optional(),
             parser: Number,
         }, {
             field: 'username',

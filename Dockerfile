@@ -1,17 +1,25 @@
-FROM node:12.16.2-alpine3.9
+FROM node:12.13-alpine As api-development
 
-WORKDIR /usr/app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install && npm cache clean --force
+RUN npm install
 
 COPY . .
 
 RUN npm run build
 
-WORKDIR ./dist
+FROM node:12.13-alpine As api-production
 
-EXPOSE ${SERVER_PORT}
+WORKDIR /usr/src/app
 
-CMD npm start
+COPY package*.json ./
+
+RUN npm install --production
+
+COPY . .
+
+COPY --from=api-development /usr/src/app/dist ./dist
+
+CMD node dist/main
